@@ -7,21 +7,13 @@
 [![Build Status][actions-badge]][actions-url]
 
 [crates-badge]: https://img.shields.io/crates/v/fasyslog.svg
-
 [crates-url]: https://crates.io/crates/fasyslog
-
 [docs-badge]: https://docs.rs/fasyslog/badge.svg
-
 [msrv-badge]: https://img.shields.io/badge/MSRV-1.75-green?logo=rust
-
 [docs-url]: https://docs.rs/fasyslog
-
 [license-badge]: https://img.shields.io/crates/l/fasyslog
-
 [license-url]: LICENSE
-
 [actions-badge]: https://github.com/fast/fasyslog/workflows/CI/badge.svg
-
 [actions-url]:https://github.com/fast/fasyslog/actions?query=workflow%3ACI
 
 ## Description
@@ -32,6 +24,7 @@ Client library written in Rust to send messages to a Syslog server. Support impl
 * RFC-5424 Formatter: [The Syslog Protocol](http://tools.ietf.org/html/rfc5424)
 * `UdpSender`: [RFC 5426 - Transmission of Syslog Messages over UDP](http://tools.ietf.org/html/rfc5426)
 * `TcpSender`: [RFC 6587 - Transmission of Syslog Messages over TCP](http://tools.ietf.org/html/rfc6587)
+* (unix only) Unix domain socket sender (datagram or stream)
 
 ## Getting Started
 
