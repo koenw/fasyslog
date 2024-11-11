@@ -1,2 +1,3 @@
-# fasyslog
-Syslog client written in Rust
+# Fasyslog
+
+A fast syslog client written in Rust.
