@@ -17,6 +17,7 @@ name = "fasyslog"
 version = "0.1.0"
 
 categories = ["development-tools::debugging"]
+description = "A fast syslog client written in Rust."
 documentation = "https://docs.rs/fasyslog"
 edition = "2021"
 keywords = ["syslog", "logs", "logging"]
