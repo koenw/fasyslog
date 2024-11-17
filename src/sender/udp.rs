@@ -33,7 +33,27 @@ pub fn udp<L: ToSocketAddrs, R: ToSocketAddrs>(local: L, remote: R) -> io::Resul
     UdpSender::connect(local, remote)
 }
 
+/// Create a UDP sender that broadcast messages to the well-known port (514).
+///
+/// See also [RFC-3164] §2 Transport Layer Protocol.
+///
+/// [RFC-3164]: https://datatracker.ietf.org/doc/html/rfc3164#section-2
+pub fn broadcast_well_known() -> io::Result<UdpSender> {
+    broadcast(514)
+}
+
+/// Create a UDP sender that broadcast messages to the given port.
+pub fn broadcast(port: u16) -> io::Result<UdpSender> {
+    let socket = UdpSocket::bind("0.0.0.0:0")?;
+    socket.set_broadcast(true)?;
+    socket.connect(format!("255.255.255.255:{port}"))?;
+    Ok(UdpSender::new(socket))
+}
+
 /// A syslog sender that sends messages to a UDP socket.
+///
+/// Users can obtain a `UdpSender` by calling [`udp_well_known`], [`udp`], [`broadcast_well_known`],
+/// or [`broadcast`].
 #[derive(Debug)]
 pub struct UdpSender {
     socket: UdpSocket,
@@ -45,10 +65,18 @@ impl UdpSender {
     pub fn connect<L: ToSocketAddrs, R: ToSocketAddrs>(local: L, remote: R) -> io::Result<Self> {
         let socket = UdpSocket::bind(local)?;
         socket.connect(remote)?;
-        Ok(Self {
+        Ok(Self::new(socket))
+    }
+
+    /// Create a new UDP sender with the given socket.
+    ///
+    /// This is useful when users want to configure the socket in fine-grained. Note that the
+    /// passed `socket` MUST be connected to the remote address.
+    pub fn new(socket: UdpSocket) -> Self {
+        Self {
             socket,
             context: SyslogContext::default(),
-        })
+        }
     }
 
     /// Set the context when formatting Syslog message.
