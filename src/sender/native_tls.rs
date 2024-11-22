@@ -41,14 +41,14 @@ pub fn native_tls<A: ToSocketAddrs, S: AsRef<str>>(
     addr: A,
     domain: S,
 ) -> io::Result<NativeTlsSender> {
-    native_tls_with(addr, domain, TlsConnector::builder())
+    native_tls_with(addr, domain, &mut TlsConnector::builder())
 }
 
 /// Create a TLS sender that sends messages to the given address with certificate builder.
 pub fn native_tls_with<A: ToSocketAddrs, S: AsRef<str>>(
     addr: A,
     domain: S,
-    builder: TlsConnectorBuilder,
+    builder: &mut TlsConnectorBuilder,
 ) -> io::Result<NativeTlsSender> {
     NativeTlsSender::connect(addr, domain, builder)
 }
@@ -69,7 +69,7 @@ impl NativeTlsSender {
     pub fn connect<A: ToSocketAddrs, S: AsRef<str>>(
         addr: A,
         domain: S,
-        builder: TlsConnectorBuilder,
+        builder: &mut TlsConnectorBuilder,
     ) -> io::Result<Self> {
         let domain = domain.as_ref();
         let stream = TcpStream::connect(addr)?;
